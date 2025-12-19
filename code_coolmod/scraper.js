@@ -2,12 +2,10 @@ const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
 // ===== БД =====
-const sequelize = require('../models');
-const Page = require('../models/Page');
 const ParsedData = require('../models/ParsedData');
 // ==============
 
-async function scrapePageWithPuppeteer(url, pageRecord) {
+async function scrapePageWithPuppeteer(url) {
     console.log('Запускаем браузер через Puppeteer...');
 
     const browser = await puppeteer.launch({
@@ -25,7 +23,7 @@ async function scrapePageWithPuppeteer(url, pageRecord) {
     const html = await page.content();
     await browser.close();
 
-    return await parseProducts(html, pageRecord);
+    return html;
 }
 
 async function parseProducts(html, pageRecord) {
@@ -60,20 +58,12 @@ async function parseProducts(html, pageRecord) {
     console.log(`Успешно спарсено товаров: ${saved}`);
 }
 
-async function main() {
+async function scrapeCoolmod(pageRecord, url = 'https://www.coolmod.com/coolpcs-black/') {
     console.log('=== Парсинг Coolmod ===');
 
-    const url = 'https://www.coolmod.com/coolpcs-black/';
-
     try {
-        await sequelize.sync();
-
-        const pageRecord = await Page.create({
-            url,
-            html: 'HTML получен через Puppeteer (Coolmod)'
-        });
-
-        await scrapePageWithPuppeteer(url, pageRecord);
+        const html = await scrapePageWithPuppeteer(url);
+        await parseProducts(html, pageRecord);
         console.log('Данные сохранены в БД');
 
     } catch (error) {
@@ -83,4 +73,4 @@ async function main() {
     console.log('=== ЗАВЕРШЕНО ===');
 }
 
-main();
+module.exports = { scrapeCoolmod };
