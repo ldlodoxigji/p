@@ -2,9 +2,9 @@ const https = require('https');
 const cheerio = require('cheerio');
 
 // ===== БД =====
-const sequelize = require('../models');
 const Page = require('../models/Page');
 const ParsedData = require('../models/ParsedData');
+const { syncIfAllowed } = require('../utils/safeSync');
 // ==============
 
 function parseWestwing(pageRecord) {
@@ -87,7 +87,12 @@ async function main() {
   const url = 'https://www.westwing.es/muebles/';
 
   try {
-    await sequelize.sync();
+    const synced = await syncIfAllowed();
+
+    if (!synced) {
+      console.warn('Запись в БД отключена для защиты данных. Парсер завершён.');
+      return;
+    }
 
     const pageRecord = await Page.create({
       url,
