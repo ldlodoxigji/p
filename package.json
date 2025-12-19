@@ -1,6 +1,25 @@
 {
+  "name": "multistore-scraper",
+  "version": "1.0.0",
+  "description": "Парсер интернет-магазинов с расписанием через cron и сохранением данных в SQLite через Sequelize.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "schedule": "node schedule.js",
+    "scrape": "node scraper.js",
+    "pm2": "pm2 start ecosystem.config.js"
+  },
   "dependencies": {
+    "cheerio": "^1.1.2",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^2.7.0",
+    "pm2": "^5.4.2",
+    "puppeteer": "^22.13.1",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
 }
