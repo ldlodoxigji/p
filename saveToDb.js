@@ -3,8 +3,6 @@ const Page = require('./models/Page');
 const ParsedData = require('./models/ParsedData');
 
 module.exports = async function saveToDb(url, products) {
-  await sequelize.sync();
-
   const page = await Page.create({
     url,
     html: 'HTML сохранён в рамках практической работы №3',
