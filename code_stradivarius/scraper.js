@@ -3,8 +3,6 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 
 // ===== БД =====
-const sequelize = require('../models');
-const Page = require('../models/Page');
 const ParsedData = require('../models/ParsedData');
 // ==============
 
@@ -126,20 +124,11 @@ function saveToTSV(data, filename) {
     console.log(`Данные сохранены в БД и в файл: ${filename}`);
 }
 
-async function main() {
+async function scrapeStradivariusStore(pageRecord, url = 'https://www.stradivarius.com/ic/mujer/ropa/sudaderas-n1989') {
     console.log('=== Парсинг Stradivarius ===');
     console.log('================================\n');
 
-    const url = 'https://www.stradivarius.com/ic/mujer/ropa/sudaderas-n1989';
-
     try {
-        await sequelize.sync();
-
-        const pageRecord = await Page.create({
-            url,
-            html: 'HTML получен через Puppeteer (Stradivarius)'
-        });
-
         const products = await scrapeStradivarius(url, pageRecord);
 
         if (products.length === 0) {
@@ -156,4 +145,4 @@ async function main() {
     console.log('\n=== ЗАВЕРШЕНО ===');
 }
 
-main();
+module.exports = { scrapeStradivariusStore };

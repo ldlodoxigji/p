@@ -7,6 +7,16 @@ const ParsedData = sequelize.define('ParsedData', {
   rating: DataTypes.STRING,
   unitsSold: DataTypes.STRING,
   category: DataTypes.STRING,
+  PageId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Pages',
+      key: 'id',
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
 }, {
   timestamps: true,
 });
