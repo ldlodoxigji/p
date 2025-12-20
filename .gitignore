@@ -1,0 +1,9 @@
+node_modules/
+logs/
+*.sqlite
+*.db
+npm-debug.log*
+.DS_Store
+.env
+coverage/
+public/*.map
