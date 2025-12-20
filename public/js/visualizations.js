@@ -8,23 +8,24 @@ function groupBy(array, selector) {
 }
 
 function prepareMonthlyTrend(data) {
-  const byMonth = groupBy(data, item => item.date.slice(0, 7));
+  const byMonth = groupBy(data, (item) => (item.date || '').slice(0, 7));
   const labels = Object.keys(byMonth).sort();
-  const values = labels.map(month => {
+  const values = labels.map((month) => {
     const items = byMonth[month];
-    return items.reduce((acc, item) => acc + item.price, 0) / items.length;
+    return items.reduce((acc, item) => acc + item.price, 0) / (items.length || 1);
   });
   return { labels, values };
 }
 
 function prepareInventory(data) {
-  const byStore = groupBy(data, item => item.store);
+  const byStore = groupBy(data, (item) => item.store || 'Неизвестно');
   const labels = Object.keys(byStore);
-  const values = labels.map(store => byStore[store].reduce((acc, item) => acc + item.availability, 0));
+  const values = labels.map((store) => byStore[store].reduce((acc, item) => acc + (item.availability || 0), 0));
   return { labels, values };
 }
 
 function drawMonthlyTrend(ctx, labels, values) {
+  if (!ctx) return;
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -49,13 +50,14 @@ function drawMonthlyTrend(ctx, labels, values) {
         tooltip: { mode: 'index', intersect: false },
       },
       scales: {
-        y: { beginAtZero: false, ticks: { callback: value => `€${value}` } },
+        y: { beginAtZero: false, ticks: { callback: (value) => `€${value}` } },
       },
     },
   });
 }
 
 function drawInventory(ctx, labels, values) {
+  if (!ctx) return;
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -80,13 +82,14 @@ function drawInventory(ctx, labels, values) {
   });
 }
 
-function drawPriceRatingScatter(target, data) {
-  const traces = Object.entries(groupBy(data, item => item.store)).map(([store, items]) => ({
-    x: items.map(item => item.rating),
-    y: items.map(item => item.price),
-    text: items.map(item => item.name),
+function drawPriceRatingScatter(target, datasets) {
+  if (!target) return;
+  const traces = datasets.map((set) => ({
+    x: set.ratings,
+    y: set.prices,
+    text: set.names,
     mode: 'markers',
-    name: store,
+    name: set.store,
     marker: { size: 10 },
   }));
 
@@ -101,9 +104,10 @@ function drawPriceRatingScatter(target, data) {
 }
 
 function drawCategoryShare(target, data) {
-  const byCategory = groupBy(data, item => item.category);
+  if (!target) return;
+  const byCategory = groupBy(data, (item) => item.category || 'Без категории');
   const labels = Object.keys(byCategory);
-  const values = labels.map(key => byCategory[key].length);
+  const values = labels.map((key) => byCategory[key].length);
 
   const trace = [{
     type: 'pie',
@@ -124,23 +128,26 @@ function drawCategoryShare(target, data) {
 }
 
 function initVisualizations() {
-  const monthly = prepareMonthlyTrend(sampleProducts);
-  const inventory = prepareInventory(sampleProducts);
+  const payload = window.chartPayload || {};
+  const products = payload.products || [];
+  const charts = payload.charts || {};
+
+  const monthly = charts.monthlyTrend || prepareMonthlyTrend(products);
+  const inventory = charts.inventory || prepareInventory(products);
   const priceRatingEl = document.getElementById('priceRatingPlot');
   const categoryShareEl = document.getElementById('categorySharePlot');
 
-  drawMonthlyTrend(document.getElementById('monthlyTrendChart'), monthly.labels, monthly.values);
-  drawInventory(document.getElementById('inventoryChart'), inventory.labels, inventory.values);
-  drawPriceRatingScatter(priceRatingEl, sampleProducts);
-  drawCategoryShare(categoryShareEl, sampleProducts);
+  drawMonthlyTrend(document.getElementById('monthlyTrendChart'), monthly.labels || [], monthly.values || []);
+  drawInventory(document.getElementById('inventoryChart'), inventory.labels || [], inventory.values || []);
+  drawPriceRatingScatter(priceRatingEl, charts.priceRating || []);
+  drawCategoryShare(categoryShareEl, products);
 
   window.addEventListener('resize', () => {
-    Plotly.Plots.resize(priceRatingEl);
-    Plotly.Plots.resize(categoryShareEl);
+    if (priceRatingEl) Plotly.Plots.resize(priceRatingEl);
+    if (categoryShareEl) Plotly.Plots.resize(categoryShareEl);
   });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   initVisualizations();
 });
-
