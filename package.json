@@ -4,10 +4,11 @@
   "description": "Парсер интернет-магазинов с расписанием через cron и сохранением данных в SQLite через Sequelize.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "schedule": "node schedule.js",
     "scrape": "node scraper.js",
-    "pm2": "pm2 start ecosystem.config.js"
+    "pm2": "pm2 start ecosystem.config.js",
+    "serve:single": "node server.js"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
