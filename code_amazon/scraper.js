@@ -14,6 +14,20 @@ const headers = {
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+function extractPrice($, parent) {
+    const offscreen = parent.find('.a-price .a-offscreen').first().text().trim();
+    if (offscreen) return offscreen;
+
+    const whole = parent.find('.a-price-whole').first().text().trim().replace('.', '');
+    const fraction = parent.find('.a-price-fraction').first().text().trim();
+    if (whole) {
+        return fraction ? `${whole}.${fraction} EUR` : `${whole} EUR`;
+    }
+
+    const textMatch = parent.text().match(/[\d,.]+/);
+    return textMatch ? `${textMatch[0]} EUR` : '';
+}
+
 async function parseProductsFromHTML(html, pageId) { // ← добавляем pageId
     const $ = cheerio.load(html);
     let productsCount = 0;
@@ -36,17 +50,18 @@ async function parseProductsFromHTML(html, pageId) { // ← добавляем p
                 if (text.length < 15 || text.includes('Amazon')) continue;
 
                 const parent = $(elements[i]).closest('div');
-                const priceMatch = parent.text().match(/[\d,]+\.?\d*\s*€/);
-                const price = priceMatch ? priceMatch[0] : 'Цена не указана';
+                const price = extractPrice($, parent);
+                const finalPrice = price || 'Price not found';
 
                 await ParsedData.create({
                     title: text,
-                    price,
+                    price: finalPrice,
                     rating: `${(Math.random() * 2 + 3).toFixed(1)}/5`,
                     unitsSold: '',
-                    category: 'Bestseller',
-                    PageId: pageId // ← используем переданный pageId
+                    category: 'Amazon',
+                    PageId: pageId // use passed pageId
                 });
+
 
                 productsCount++;
                 parsedCount++;
