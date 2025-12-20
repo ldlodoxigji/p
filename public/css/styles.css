@@ -1,0 +1,61 @@
+:root {
+  --accent: #4c7bd9;
+  --accent-2: #f4a259;
+  --bg: #f5f7fb;
+}
+
+body {
+  background: var(--bg);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.hero {
+  padding: 3rem 0 2rem;
+}
+
+.section-title {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.card-kpi {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: none;
+}
+
+.card-kpi .number {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.badge-soft-primary {
+  background: rgba(76, 123, 217, 0.1);
+  color: #2f5fa7;
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
+}
+
+.chart-card {
+  min-height: 340px;
+}
+
+.chart-card canvas {
+  height: 280px !important;
+}
+
+.plot-container {
+  height: 360px;
+}
+
+.footer {
+  color: #6b7280;
+}
