@@ -42,7 +42,10 @@ const stores = [
 async function runScraper() {
   try {
     await sequelize.sync();
+<<<<<<< HEAD
     await sequelize.sync({ alter: true });
+=======
+>>>>>>> ec02edbb5c60c662063e3cb3b17b1a0c7b57eba1
 
     for (const store of stores) {
       console.log(`Запуск ${store.name} парсера...`);
@@ -52,6 +55,11 @@ async function runScraper() {
     }
   } catch (err) {
     console.error('Ошибка выполнения:', err.message);
+<<<<<<< HEAD
+=======
+  } finally {
+    await sequelize.close();
+>>>>>>> ec02edbb5c60c662063e3cb3b17b1a0c7b57eba1
   }
 }
 
