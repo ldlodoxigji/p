@@ -15,7 +15,7 @@ module.exports = async function saveToDb(url, products) {
       rating: product.rating,
       unitsSold: product.unitsSold,
       category: product.category,
-      PageId: page.id,
+      pageId: page.id,
     });
   }
 };

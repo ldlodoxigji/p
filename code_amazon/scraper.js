@@ -59,7 +59,7 @@ async function parseProductsFromHTML(html, pageId) { // ← добавляем p
                     rating: `${(Math.random() * 2 + 3).toFixed(1)}/5`,
                     unitsSold: '',
                     category: 'Amazon',
-                    PageId: pageId // use passed pageId
+                    pageId: pageId // use passed pageId
                 });
 
 
@@ -74,7 +74,7 @@ async function parseProductsFromHTML(html, pageId) { // ← добавляем p
     return parsedCount;
 }
 
-async function scrapeAmazon(pageId) { // ← принимаем pageId
+async function scrapeAmazon(pageId) { 
     try {
         console.log('=== Парсинг Amazon.es ===');
 

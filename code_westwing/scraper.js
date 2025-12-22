@@ -65,7 +65,7 @@ async function parseWestwing(html, pageRecord) {
         rating: '',
         unitsSold: '',
         category: 'Westwing',
-        PageId: pageRecord.id
+        pageId: pageRecord.id
       });
       // ==========================
 

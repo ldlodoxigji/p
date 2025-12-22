@@ -6,7 +6,7 @@ const ParsedData = require('../models/ParsedData');
 // ==============
 
 async function scrapePageWithPuppeteer(url) {
-    console.log('?-??????????? ?+???????????? ?????????? Puppeteer...');
+    console.log('Сбор данных через Puppeteer...');
 
     const browser = await puppeteer.launch({
         headless: 'new',
@@ -105,7 +105,7 @@ async function parseProducts(html, pageRecord) {
             rating: '',
             unitsSold: '',
             category: 'Coolmod',
-            PageId: pageRecord.id
+            pageId: pageRecord.id
         });
 
         saved++;

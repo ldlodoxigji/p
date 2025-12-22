@@ -45,7 +45,7 @@ async function parseProductsFromHTML(html, pageId) { // ← добавляем p
                     rating: `${(Math.random() * 2 + 3).toFixed(1)}/5`,
                     unitsSold: '',
                     category: 'Bestseller',
-                    PageId: pageId // ← используем переданный pageId
+                    pageId: pageId // ← используем переданный pageId
                 });
 
                 productsCount++;

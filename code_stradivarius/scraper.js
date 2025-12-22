@@ -100,7 +100,7 @@ async function parseStradivariusProducts(html, pageRecord) {
             rating: '',
             unitsSold: '',
             category: 'Stradivarius',
-            PageId: pageRecord.id
+            pageId: pageRecord.id
         });
         // ==========================
 

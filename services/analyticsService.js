@@ -4,8 +4,8 @@ const sequelize = require('../models');
 const Page = require('../models/Page');
 const ParsedData = require('../models/ParsedData');
 
-Page.hasMany(ParsedData, { foreignKey: 'PageId' });
-ParsedData.belongsTo(Page, { foreignKey: 'PageId' });
+Page.hasMany(ParsedData, { foreignKey: 'pageId' });
+ParsedData.belongsTo(Page, { foreignKey: 'pageId' });
 
 const STORE_CANONICAL = {
   amazon: 'Amazon',

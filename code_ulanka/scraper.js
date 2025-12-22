@@ -73,7 +73,7 @@ async function parseUlankaPrecise(html, pageRecord) {
       rating: '',
       unitsSold: '',
       category: 'Ulanka',
-      PageId: pageRecord.id
+      pageId: pageRecord.id
     });
     // ==========================
   }

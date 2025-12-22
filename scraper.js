@@ -1,3 +1,4 @@
+const { DataTypes } = require('sequelize');
 const sequelize = require('./models');
 const Page = require('./models/Page');
 const { scrapeAmazon } = require('./code_amazon/scraper');
@@ -41,8 +42,20 @@ const stores = [
 
 async function runScraper() {
   try {
-    await sequelize.sync({ alter: true });
-
+    const qi = sequelize.getQueryInterface();
+    const parsedColumns = await qi.describeTable('ParsedData').catch(() => ({}));
+    if (!parsedColumns.pageId) {
+      await qi.addColumn('ParsedData', 'pageId', {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Pages',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      });
+    }
     for (const store of stores) {
       console.log(`Запуск ${store.name} парсера...`);
       const page = await Page.create({ url: store.url, html: store.html });

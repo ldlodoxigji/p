@@ -7,7 +7,7 @@ function groupBy(array, selector) {
   }, {});
 }
 
-const KNOWN_STORES = new Set(['amazon', 'bestseller', 'coolmod', 'stradivarius', 'ulanka', 'westwing']);
+const KNOWN_STORES = new Set(['amazon', 'coolmod', 'stradivarius', 'ulanka', 'westwing']);
 
 function normalizeStoreKey(value) {
   return (value || '').toString().trim().toLowerCase();

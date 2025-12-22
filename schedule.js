@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { runScraper } = require('./scraper');
 
-// Запуск каждые 5 минут (на 0-й, 5-й, 10-й и т.д. минуте каждого часа)
+// Запуск каждые 5 минут 
 cron.schedule('*/5 * * * *', async () => {
   console.log(`[${new Date().toISOString()}] Запуск парсера по расписанию...`);
   

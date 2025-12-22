@@ -7,7 +7,7 @@ const ParsedData = sequelize.define('ParsedData', {
   rating: DataTypes.STRING,
   unitsSold: DataTypes.STRING,
   category: DataTypes.STRING,
-  PageId: {
+  pageId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
